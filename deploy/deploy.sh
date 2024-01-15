@@ -7,6 +7,7 @@ echo "Creating production deployment packages for Saleor Dashboard..."
 echo ""
 #########################################################################################
 
+source /home/user/.nvm/nvm.sh
 nvm use v16.20.2
 
 HD=/home/user/tmp

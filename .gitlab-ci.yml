@@ -17,6 +17,14 @@ check_lock:
     - npm install
     - npx lockfile-lint --path package-lock.json --allowed-hosts npm yarn
 
+lint:
+  stage: test
+  image: node:16.20.2
+  script:
+    - npm install
+    - npm run lint
+    - git diff --exit-code ./src 
+
 deploy:
   stage: deploy
   image: valudio/docker-sshpass:latest

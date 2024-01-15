@@ -40,6 +40,13 @@ check_translation_message:
     - npm run extract-messages
     - git diff --exit-code ./locale   
 
+build:
+  stage: test
+  image: node:16.20.2
+  script:
+    - npm install
+    - npm run test    
+
 deploy:
   stage: deploy
   image: valudio/docker-sshpass:latest

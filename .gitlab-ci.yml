@@ -1,9 +1,9 @@
-image: busybox:latest
-
 stages:
   - deploy
 
 deploy:
   stage: deploy
+  image: valudio/docker-sshpass:latest
   script:
-    - echo "Deploy file"
+    - apk add --update --no-cache openssh sshpass
+    - sshpass -p user ssh user@169.254.100.2 -t -o StrictHostKeychecking=no env HD=/home/user/tmp UN=user HOST=api.domain.com APIURI=graphql VERSION=main APP_HOST=dashboard.domain.com APP_MOUNT_URI=app.domain.com 'bash -s' < deploy/deploy.sh

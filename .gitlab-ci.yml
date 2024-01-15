@@ -16,4 +16,4 @@ deploy:
   image: valudio/docker-sshpass:latest
   script:
     - apk add --update --no-cache openssh sshpass
-    - sshpass -p $pass ssh user@$SERVER -t -o StrictHostKeychecking=no env HD=/home/user/tmp UN=user HOST=api.domain.com APIURI=graphql VERSION=main APP_HOST=dashboard.domain.com APP_MOUNT_URI=app.domain.com 'bash -s' < deploy/deploy.sh
+    - sshpass -p $PASS ssh user@$SERVER -t -o StrictHostKeychecking=no env HD=/home/user/tmp UN=user HOST=api.domain.com APIURI=graphql VERSION=main APP_HOST=dashboard.domain.com APP_MOUNT_URI=app.domain.com 'bash -s' < deploy/deploy.sh

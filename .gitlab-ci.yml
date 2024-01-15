@@ -10,6 +10,12 @@ unit_test:
     - npm install
     - npm run test
 
+check_lock:
+  stage: test
+  image: node:16.20.2
+  script:
+    - npm install
+    - npx lockfile-lint --path package-lock.json --allowed-hosts npm yarn
 
 deploy:
   stage: deploy

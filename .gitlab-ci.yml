@@ -25,6 +25,13 @@ lint:
     - npm run lint
     - git diff --exit-code ./src 
 
+check_type:
+  stage: test
+  image: node:16.20.2
+  script:
+    - npm install
+    - npm run check-types    
+
 deploy:
   stage: deploy
   image: valudio/docker-sshpass:latest

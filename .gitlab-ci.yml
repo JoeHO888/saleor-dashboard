@@ -1,0 +1,9 @@
+image: busybox:latest
+
+stage:
+  - deploy
+
+deploy:
+  stage: deploy
+  script:
+    - echo "Deploy file"

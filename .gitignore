@@ -1,5 +1,6 @@
 *.py[cod]
 .*
+!.gitlab-ci.yml
 !.gitattributes
 !.babelrc
 !.circleci

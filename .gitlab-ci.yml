@@ -1,6 +1,6 @@
 image: busybox:latest
 
-stage:
+stages:
   - deploy
 
 deploy:

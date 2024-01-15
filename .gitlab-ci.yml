@@ -32,6 +32,14 @@ check_type:
     - npm install
     - npm run check-types    
 
+check_translation_message:
+  stage: test
+  image: node:16.20.2
+  script:
+    - npm install
+    - npm run extract-messages
+    - git diff --exit-code ./locale   
+
 deploy:
   stage: deploy
   image: valudio/docker-sshpass:latest

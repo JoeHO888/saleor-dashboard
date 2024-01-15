@@ -1,5 +1,14 @@
 stages:
+  - test
   - deploy
+
+unit_test:
+  stage: test
+  image: node:16.20.2
+  script:
+    - npm install
+    - npm run test
+
 
 deploy:
   stage: deploy

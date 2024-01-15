@@ -7,6 +7,8 @@ echo "Creating production deployment packages for Saleor Dashboard..."
 echo ""
 #########################################################################################
 
+nvm use v16.20.2
+
 HD=/home/user/tmp
 UN=user
 HOST="api.domain.com"

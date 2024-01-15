@@ -10,15 +10,6 @@ echo ""
 source /home/user/.nvm/nvm.sh
 nvm use v16.20.2
 
-HD=/home/user/tmp
-UN=user
-HOST="api.domain.com"
-APIURI="graphql"
-VERSION="main"
-APP_HOST="dashboard.domain.com"
-APP_MOUNT_URI="app.domain.com"
-
-
 #########################################################################################
 # Clone the git and setup the environment variables for Saleor API & Dashboard install
 #########################################################################################

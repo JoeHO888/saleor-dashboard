@@ -1,0 +1,17 @@
+# configuration of the server
+server {
+    listen      80;
+    listen      443 ssl;
+    ssl_certificate     /etc/nginx/ssl/domain.com.crt;
+    ssl_certificate_key /etc/nginx/ssl/domain.com.key;      
+    server_name {host} www.{host};
+    charset     utf-8;
+    root /var/www/{host};
+    # max upload size
+    client_max_body_size 75M;
+    
+    location / {
+        index  index.html;
+        try_files $uri $uri/ /index.html;
+    }
+}

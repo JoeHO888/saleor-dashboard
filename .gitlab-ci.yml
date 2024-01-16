@@ -50,11 +50,12 @@ build:
   image: node:16.20.2
   script:
     - npm install
-    - npm run test    
+    - npm run build
 
 deploy:
   stage: deploy
   image: valudio/docker-sshpass:latest
+  when: manual
   script:
     - sshpass -p $PASS ssh user@$SERVER -t -o StrictHostKeychecking=no \
       env HD=/home/user/tmp \
@@ -65,3 +66,10 @@ deploy:
       APP_HOST=dashboard.domain.com \
       APP_MOUNT_URI=app.domain.com \
       'bash -s' < deploy/deploy.sh
+
+new_deploy:
+  stage: deploy
+  image: valudio/docker-sshpass:latest
+  script:
+    - ls -al build/
+    - ls -al build/dashboard

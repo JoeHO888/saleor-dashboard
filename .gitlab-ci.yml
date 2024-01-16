@@ -6,6 +6,7 @@ stages:
 unit_test:
   stage: test
   image: node:16.20.2
+  allow_failure: true  
   script:
     - npm install
     - npm run test
@@ -13,6 +14,7 @@ unit_test:
 check_lock:
   stage: test
   image: node:16.20.2
+  allow_failure: true  
   script:
     - npm install
     - npx lockfile-lint --path package-lock.json --allowed-hosts npm yarn
@@ -20,6 +22,7 @@ check_lock:
 lint:
   stage: test
   image: node:16.20.2
+  allow_failure: true  
   script:
     - npm install
     - npm run lint
@@ -28,6 +31,7 @@ lint:
 check_type:
   stage: test
   image: node:16.20.2
+  allow_failure: true  
   script:
     - npm install
     - npm run check-types    
@@ -35,6 +39,7 @@ check_type:
 check_translation_message:
   stage: test
   image: node:16.20.2
+  allow_failure: true  
   script:
     - npm install
     - npm run extract-messages

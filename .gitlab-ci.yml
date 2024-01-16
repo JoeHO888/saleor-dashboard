@@ -3,60 +3,58 @@ stages:
   - build
   - deploy
 
+######## Default Job Setting ########
+
+variables:
+  HD: "/home/user/tmp"
+  UN: "user"
+  HOST: "api.domain.com"
+  APIURI: "graphql"
+  VERSION: "main"
+  APP_HOST: "dashboard.domain.com"
+  APP_MOUNT_URI: "app.domain.com"
+  API_URL: "https://$HOST/$APIURI/"
+  SERVER_BLOCK_NAME: "saleor-dashboard" 
+
+default:
+  image: node:16.20.2 
+  before_script:
+      - npm install
+
 unit_test:
   stage: test
-  image: node:16.20.2
   allow_failure: true  
   script:
-    - npm install
     - npm run test
 
 check_lock:
   stage: test
-  image: node:16.20.2
   allow_failure: true  
   script:
-    - npm install
     - npx lockfile-lint --path package-lock.json --allowed-hosts npm yarn
 
 lint:
   stage: test
-  image: node:16.20.2
   allow_failure: true  
   script:
-    - npm install
     - npm run lint
     - git diff --exit-code ./src 
 
 check_type:
   stage: test
-  image: node:16.20.2
   allow_failure: true  
   script:
-    - npm install
     - npm run check-types    
 
 check_translation_message:
   stage: test
-  image: node:16.20.2
   allow_failure: true  
   script:
-    - npm install
     - npm run extract-messages
     - git diff --exit-code ./locale   
 
 build:
   stage: build
-  image: node:16.20.2
-  variables:
-    HD: "/home/user/tmp"
-    UN: "user"
-    HOST: "api.domain.com"
-    APIURI: "graphql"
-    VERSION: "main"
-    APP_HOST: "dashboard.domain.com"
-    APP_MOUNT_URI: "app.domain.com"
-    API_URL: "https://$HOST/$APIURI/"
   before_script:
     - sed "s|{api_url}|$API_URL|" deploy/template.env | dd status=none of=.env  
   script:
@@ -85,16 +83,6 @@ deploy:
 new_deploy:
   stage: deploy
   image: valudio/docker-sshpass:latest
-  variables:
-    HD: "/home/user/tmp"
-    UN: "user"
-    HOST: "api.domain.com"
-    APIURI: "graphql"
-    VERSION: "main"
-    APP_HOST: "dashboard.domain.com"
-    APP_MOUNT_URI: "app.domain.com"
-    API_URL: "https://$HOST/$APIURI/"
-    SERVER_BLOCK_NAME: "saleor-dashboard"
   before_script:
     - sed "s|{hd}|$HD|g; s/{app_mount_uri}/$APP_MOUNT_URI/g; s/{host}/$APP_HOST/g" deploy/server_block | dd status=none of=saleor_dashboard_server_block
   script:

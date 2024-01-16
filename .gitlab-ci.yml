@@ -85,6 +85,29 @@ deploy:
 new_deploy:
   stage: deploy
   image: valudio/docker-sshpass:latest
+  variables:
+    HD: "/home/user/tmp"
+    UN: "user"
+    HOST: "api.domain.com"
+    APIURI: "graphql"
+    VERSION: "main"
+    APP_HOST: "dashboard.domain.com"
+    APP_MOUNT_URI: "app.domain.com"
+    API_URL: "https://$HOST/$APIURI/"
+    SERVER_BLOCK_NAME: "saleor-dashboard"
+  before_script:
+    - sed "s|{hd}|$HD|g; s/{app_mount_uri}/$APP_MOUNT_URI/g; s/{host}/$APP_HOST/g" deploy/server_block | dd status=none of=saleor_dashboard_server_block
   script:
-    - ls -al build/
-    - ls -al build/dashboard
+# Copy Server Block  
+    - sshpass -p $PASS ssh user@$SERVER -t -o StrictHostKeychecking=no "sudo rm -rf /var/www/$APP_HOST"
+    - sshpass -p $PASS scp -r build/dashboard/ user@$SERVER:$HD    
+    - sshpass -p $PASS ssh user@$SERVER -t -o StrictHostKeychecking=no "sudo mv $HD/dashboard /var/www/$APP_HOST"
+    - sshpass -p $PASS ssh user@$SERVER -t -o StrictHostKeychecking=no "sudo chown -R www-data /var/www/$APP_HOST"    
+# Copy Server Block 
+    - sshpass -p $PASS ssh user@$SERVER -t -o StrictHostKeychecking=no "sudo rm -rf /etc/nginx/sites-available/$SERVER_BLOCK_NAME"       
+    - sshpass -p $PASS scp saleor_dashboard_server_block user@$SERVER:$HD
+    - sshpass -p $PASS ssh user@$SERVER -t -o StrictHostKeychecking=no "sudo mv $HD/saleor_dashboard_server_block /etc/nginx/sites-available/$SERVER_BLOCK_NAME"  
+# Configure Nginx     
+    - sshpass -p $PASS ssh user@$SERVER -t -o StrictHostKeychecking=no "sudo rm -rf /etc/nginx/sites-enabled/saleor-dashboard"
+    - sshpass -p $PASS ssh user@$SERVER -t -o StrictHostKeychecking=no "sudo ln -s /etc/nginx/sites-available/saleor-dashboard /etc/nginx/sites-enabled/"    
+    - sshpass -p $PASS ssh user@$SERVER -t -o StrictHostKeychecking=no "sudo systemctl reload nginx "        

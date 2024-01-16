@@ -48,6 +48,17 @@ check_translation_message:
 build:
   stage: build
   image: node:16.20.2
+  variables:
+    HD: "/home/user/tmp"
+    UN: "user"
+    HOST: "api.domain.com"
+    APIURI: "graphql"
+    VERSION: "main"
+    APP_HOST: "dashboard.domain.com"
+    APP_MOUNT_URI: "app.domain.com"
+    API_URL: "https://$HOST/$APIURI/"
+  before_script:
+    - sed "s|{api_url}|$API_URL|" deploy/template.env | dd status=none of=.env  
   script:
     - npm install
     - npm run build

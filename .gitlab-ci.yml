@@ -41,7 +41,7 @@ check_translation_message:
     - git diff --exit-code ./locale   
 
 build:
-  stage: test
+  stage: build
   image: node:16.20.2
   script:
     - npm install

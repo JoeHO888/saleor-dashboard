@@ -51,6 +51,10 @@ build:
   script:
     - npm install
     - npm run build
+  artifacts:
+    paths:
+      - build/dashboard/
+    expire_in: 1 day    
 
 deploy:
   stage: deploy

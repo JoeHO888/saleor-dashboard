@@ -23,18 +23,30 @@ default:
 
 unit_test:
   stage: test
+  rules:
+    - if: $RUN_TEST == "true"
+      when: always
+    - when: never  
   allow_failure: true  
   script:
     - npm run test
 
 check_lock:
   stage: test
+  rules:
+    - if: $RUN_TEST == "true"
+      when: always
+    - when: never  
   allow_failure: true  
   script:
     - npx lockfile-lint --path package-lock.json --allowed-hosts npm yarn
 
 lint:
   stage: test
+  rules:
+    - if: $RUN_TEST == "true"
+      when: always
+    - when: never  
   allow_failure: true  
   script:
     - npm run lint
@@ -42,12 +54,20 @@ lint:
 
 check_type:
   stage: test
+  rules:
+    - if: $RUN_TEST == "true"
+      when: always
+    - when: never  
   allow_failure: true  
   script:
     - npm run check-types    
 
 check_translation_message:
   stage: test
+  rules:
+    - if: $RUN_TEST == "true"
+      when: always
+    - when: never  
   allow_failure: true  
   script:
     - npm run extract-messages

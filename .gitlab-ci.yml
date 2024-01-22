@@ -108,8 +108,9 @@ new_deploy:
   script:
 # Copy Server Block  
     - sshpass -p $PASS ssh $ACC@$SERVER -t -o StrictHostKeychecking=no "sudo rm -rf /var/www/$APP_HOST"
+    - sshpass -p $PASS ssh $ACC@$SERVER -t -o StrictHostKeychecking=no "sudo mkdir -p /var/www/$APP_HOST"    
     - sshpass -p $PASS scp -r build/dashboard/ $ACC@$SERVER:$HD    
-    - sshpass -p $PASS ssh $ACC@$SERVER -t -o StrictHostKeychecking=no "sudo mv $HD/dashboard /var/www/$APP_HOST"
+    - sshpass -p $PASS ssh $ACC@$SERVER -t -o StrictHostKeychecking=no "sudo mv -v $HD/* /var/www/$APP_HOST"
     - sshpass -p $PASS ssh $ACC@$SERVER -t -o StrictHostKeychecking=no "sudo chown -R www-data /var/www/$APP_HOST"    
 # Copy Server Block 
     - sshpass -p $PASS ssh $ACC@$SERVER -t -o StrictHostKeychecking=no "sudo rm -rf /etc/nginx/sites-available/$SERVER_BLOCK_NAME"       

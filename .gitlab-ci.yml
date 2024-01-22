@@ -108,14 +108,17 @@ new_deploy:
   script:
 # Copy Server Block  
     - sshpass -p $PASS ssh $ACC@$SERVER -t -o StrictHostKeychecking=no "sudo rm -rf /var/www/$APP_HOST"
-    - sshpass -p $PASS ssh $ACC@$SERVER -t -o StrictHostKeychecking=no "sudo mkdir -p /var/www/$APP_HOST"    
-    - sshpass -p $PASS scp -r build/dashboard/ $ACC@$SERVER:$HD    
-    - sshpass -p $PASS ssh $ACC@$SERVER -t -o StrictHostKeychecking=no "sudo mv -v $HD/* /var/www/$APP_HOST"
+    - sshpass -p $PASS ssh $ACC@$SERVER -t -o StrictHostKeychecking=no "sudo rm -rf $HD/html_data"    
+    - sshpass -p $PASS ssh $ACC@$SERVER -t -o StrictHostKeychecking=no "mkdir -p $HD/html_data"    
+    - sshpass -p $PASS scp -r build/dashboard $ACC@$SERVER:$HD/html_data
+    - sshpass -p $PASS ssh $ACC@$SERVER -t -o StrictHostKeychecking=no "sudo mv -v $HD/html_data/* /var/www/$APP_HOST/"
     - sshpass -p $PASS ssh $ACC@$SERVER -t -o StrictHostKeychecking=no "sudo chown -R www-data /var/www/$APP_HOST"    
 # Copy Server Block 
     - sshpass -p $PASS ssh $ACC@$SERVER -t -o StrictHostKeychecking=no "sudo rm -rf /etc/nginx/sites-available/$SERVER_BLOCK_NAME"       
-    - sshpass -p $PASS scp saleor_dashboard_server_block $ACC@$SERVER:$HD
-    - sshpass -p $PASS ssh $ACC@$SERVER -t -o StrictHostKeychecking=no "sudo mv $HD/saleor_dashboard_server_block /etc/nginx/sites-available/$SERVER_BLOCK_NAME"  
+    - sshpass -p $PASS ssh $ACC@$SERVER -t -o StrictHostKeychecking=no "sudo rm -rf $HD/nginx_data"    
+    - sshpass -p $PASS ssh $ACC@$SERVER -t -o StrictHostKeychecking=no "mkdir -p $HD/nginx_data"    
+    - sshpass -p $PASS scp  -o StrictHostKeychecking=no saleor_dashboard_server_block $ACC@$SERVER:$HD/nginx_data
+    - sshpass -p $PASS ssh $ACC@$SERVER -t -o StrictHostKeychecking=no "sudo mv $HD/nginx_data/saleor_dashboard_server_block /etc/nginx/sites-available/$SERVER_BLOCK_NAME"  
 # Configure Nginx     
     - sshpass -p $PASS ssh $ACC@$SERVER -t -o StrictHostKeychecking=no "sudo rm -rf /etc/nginx/sites-enabled/saleor-dashboard"
     - sshpass -p $PASS ssh $ACC@$SERVER -t -o StrictHostKeychecking=no "sudo ln -s /etc/nginx/sites-available/saleor-dashboard /etc/nginx/sites-enabled/"    

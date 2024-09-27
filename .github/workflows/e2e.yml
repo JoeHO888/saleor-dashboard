@@ -32,6 +32,7 @@ jobs:
                 if (line.includes('[x]')) tags.push(line.replace(/[0-9]+\. \[x\] /, "@stable+@"))
               });
               const tagsToReturn = tags.join(",").toString();
+              console.log(tagsToReturn);
               return tagsToReturn.replace(/\r/g, '')
             }catch{
               return '@critical'
